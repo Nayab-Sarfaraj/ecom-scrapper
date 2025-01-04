@@ -10,6 +10,8 @@ import orderSlice from "./features/admin/orderSlice";
 import addressSlice from "./features/cart/addressSlice";
 import myOrderSlce from "./features/orderSlice";
 import searchProductSlice from "./features/searchedProductSlice";
+import notificationsSlice from "./features/admin/notificationSlice";
+import selectedNotificationSlice from "./features/admin/SelectedNotificationSlice";
 export const store = configureStore({
   reducer: {
     cart: cartSlice,
@@ -23,6 +25,8 @@ export const store = configureStore({
     address: addressSlice,
     myOrders: myOrderSlce,
     searchedProducts: searchProductSlice,
+    notifications: notificationsSlice,
+    selectedNotification: selectedNotificationSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(cartMiddleware),

@@ -33,6 +33,8 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword.jsx"));
 const Checkout = lazy(() => import("./pages/Checkout.jsx"));
 const OrderSummary = lazy(() => import("./pages/OrderSummary.jsx"));
 const MyOrder = lazy(() => import("./pages/MyOrder.jsx"));
+const Notifications = lazy(() => import("./pages/Notifications.jsx"));
+const NotificationPage = lazy(() => import("./pages/NotificationPage.jsx"));
 function App() {
   const dispatch = useDispatch();
   // const isVendor = useSelector((state) => state.user?.isVendor);
@@ -76,6 +78,11 @@ function App() {
             <Route path="/vendor/dashboard" element={<Dashboard />} />
             <Route path="/vendor/products" element={<AdminProducts />} />
             <Route path="/vendor/orders" element={<AdminOrders />} />
+            <Route path="/vendor/notifications" element={<Notifications />} />
+            <Route
+              path="/vendor/notification/:id"
+              element={<NotificationPage />}
+            />
 
             <Route
               path="/vendor/order/details/:id"

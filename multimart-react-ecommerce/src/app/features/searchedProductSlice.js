@@ -25,7 +25,7 @@ const searchedProductSlice = createSlice({
 
 export const getSearchedProducts = createAsyncThunk(
   "getSearchedProducts",
-  async ({ searchQuery, page, minPrice=500, maxPrice = 500000 }) => {
+  async ({ searchQuery, page, minPrice = 500, maxPrice = 500000 }) => {
     try {
       console.log(minPrice);
       let url = "";

@@ -6,14 +6,17 @@ import ShopList from "../components/ShopList";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
 import { useSelector } from "react-redux";
 import ScrappedShopList from "../components/ScrappedShopList";
+import PaginationComponent from "../components/PaginationComponent";
 
 const Shop = () => {
   const [filterList, setFilterList] = useState([]);
+
   // const [products, setProducts] = useState([])
   // const [amazonProducts, setAmazonProducts] = useState([])
   const products = useSelector(state => state.searchedProducts.data?.products) || []
   const amazonProducts = useSelector(state => state.searchedProducts.data?.amazonProducts) || []
   const flipkartProducts = useSelector(state => state.searchedProducts.data?.flipkartProducts) || []
+
   useWindowScrollToTop();
 
   return (
@@ -34,7 +37,6 @@ const Shop = () => {
           <ShopList productItems={products} />
           <ScrappedShopList productItems={amazonProducts} title={"Amazon"} />
           <ScrappedShopList productItems={flipkartProducts} title={"Flipkart"} />
-
         </Container>
       </section>
     </Fragment>

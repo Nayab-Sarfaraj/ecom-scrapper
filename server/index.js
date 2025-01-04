@@ -19,6 +19,8 @@ const orderRouter = require("./routes/order.routes");
 server.use("/api/v1", orderRouter);
 const paymentRouter = require("./routes/payment.routes");
 server.use("/api/v1", paymentRouter);
+const notificationRouter = require("./routes/notification.routes");
+server.use("/api/v1", notificationRouter);
 server.use(customErrorHandler);
 const PORT = process.env.PORT;
 server.listen(PORT, () => {

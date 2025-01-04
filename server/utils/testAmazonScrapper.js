@@ -1,6 +1,11 @@
 const puppeteer = require("puppeteer");
 
-const testfetchAmazonProducts = async (searchQuery, currentPage, minPrice) => {
+const testfetchAmazonProducts = async (
+  searchQuery,
+  currentPage,
+  minPrice,
+  maxPrice
+) => {
   console.log(minPrice);
   try {
     const searchArr = searchQuery.trim().split(" ");
@@ -26,7 +31,7 @@ const testfetchAmazonProducts = async (searchQuery, currentPage, minPrice) => {
 
     // for (let i = 1; i <= page; i++) {
     // console.log(searchQuery);
-    const url = `https://www.amazon.in/s?k=${searchQuery}&page=${currentPage}&low-price=${minPrice}&high-price=500000&s=price-asc-rank`;
+    const url = `https://www.amazon.in/s?k=${searchQuery}&page=${currentPage}&low-price=${minPrice}&high-price=${maxPrice}&s=price-asc-rank`;
     console.log(`Navigating to ${url}`);
 
     const selectorOne = `div[data-index]`;

@@ -39,7 +39,7 @@ const AdminProducts = () => {
                                 <td>{product._id.slice(-5)}</td>
                                 <td className="text-capitalize">{product.name}</td>
                                 <td className="text-capitalize">{product.category}</td>
-                                <td>${product.price}</td>
+                                <td>₹{product.price}</td>
                                 <td>{product.stock}</td>
                                 <td>{product.rating > 0 ? product.rating : "No"}</td>
                                 <td>

@@ -4,6 +4,7 @@ const uploadOnCloudinary = require("../utils/cloudinary");
 const Errorhandler = require("../utils/errorHandler");
 const fetchFlipkartProduct = require("../utils/flipkartScrapper");
 const testfetchAmazonProducts = require("../utils/testAmazonScrapper");
+const { createNotification } = require("./notification.controller");
 
 const createProduct = async (req, res, next) => {
   try {
@@ -268,8 +269,7 @@ const getSearchedProduct = async (req, res, next) => {
     const productsPerPage = 6;
     const page = req.query.page;
     const minPrice = req.query.minPrice;
-    console.log(page);
-    console.log(minPrice)
+    const maxPrice = req.query.maxPrice;
     const toBeSkipped = Math.abs(productsPerPage * (page - 1));
     const searchQuery = req.query.searchQuery;
 
@@ -278,11 +278,19 @@ const getSearchedProduct = async (req, res, next) => {
         { name: { $regex: searchQuery, $options: "i" } },
         { category: { $regex: searchQuery, $options: "i" } },
       ],
-    });
+    })
+      .skip(toBeSkipped)
+      .populate({
+        path: "vendor",
+        match: { district: req.user.district },
+        select: "name district",
+      })
+      .exec();
     let amazonProducts = await testfetchAmazonProducts(
       searchQuery,
       page,
-      minPrice
+      minPrice,
+      maxPrice
     );
     if (amazonProducts?.length !== 0) {
       amazonProducts = amazonProducts.filter(
@@ -294,7 +302,12 @@ const getSearchedProduct = async (req, res, next) => {
       );
     }
 
-    const flipkartProducts = await fetchFlipkartProduct(searchQuery, page);
+    let flipkartProducts = await fetchFlipkartProduct(
+      searchQuery,
+      page,
+      minPrice,
+      maxPrice
+    );
     if (flipkartProducts?.length === 0) {
       flipkartProducts = flipkartProducts.filter(
         (item) =>
@@ -304,13 +317,26 @@ const getSearchedProduct = async (req, res, next) => {
           Object.hasOwn(item, "image")
       );
     }
-    return res
+    res
       .status(200)
       .json({ success: true, products, amazonProducts, flipkartProducts });
+    console.log("here");
+    if (products && products.length !== 0) {
+      console.log("here");
+      for (const prd of products) {
+        const notification = await createNotification(
+          prd.name,
+          req.user,
+          prd,
+          prd.vendor
+        );
+        console.log(notification);
+      }
+    }
   } catch (error) {
     console.log("ERROR WHILE SEARCHING THE PRODUCT");
     console.log(error);
-    return next(new Errorhandler("Something went wrong"));
+    return next(new Errorhandler("Something went wrong", 400));
   }
 };
 

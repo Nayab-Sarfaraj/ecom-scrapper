@@ -4,6 +4,7 @@ import { fetchVendorProduct } from '../app/features/admin/fetchVendorProducts'
 import { fetchVendorOrders } from '../app/features/admin/fetchOrders'
 import { Card, Row, Col, Button, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { fetchNotifications } from '../app/features/admin/notificationSlice';
 
 const Dashboard = () => {
   const dispatch = useDispatch()
@@ -15,12 +16,14 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(fetchVendorProduct())
     dispatch(fetchVendorOrders())
+    dispatch(fetchNotifications())
   }, [])
   return (
     <div className="p-4 bg-light ">
       {/* Dashboard Heading */}
       <div className="text-center mb-4">
-        <h2>Dashboard</h2>
+        <h2 className='mb-4'>Dashboard</h2>
+        <Button variant="primary" onClick={() => navigate("/vendor/notifications")}>View Notifications</Button>
       </div>
 
       {/* Vendor Options */}
@@ -63,6 +66,7 @@ const Dashboard = () => {
             </Card.Body>
           </Card>
         </Col>
+
       </Row>
 
       {/* Recent Orders Table */}
