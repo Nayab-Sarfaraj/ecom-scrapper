@@ -303,7 +303,7 @@ const getSearchedProduct = async (req, res, next) => {
         .exec();
     }
     if (products.length == 0) {
-      await Products.find({
+      products = await Products.find({
         $or: [
           { name: { $regex: searchQuery, $options: "i" } },
           { category: { $regex: searchQuery, $options: "i" } },
