@@ -8,7 +8,9 @@ require("dotenv").config();
 const server = express();
 connectToDB();
 server.use(express.json());
-server.use(cors({ credentials: true, origin: "*" }));
+server.use(
+  cors({ credentials: true, origin: ["https://ecom-scrapper.vercel.app/"] })
+);
 server.use(express.urlencoded({ extended: false }));
 server.use(cookieParser());
 const userRouter = require("./routes/user.routes");
