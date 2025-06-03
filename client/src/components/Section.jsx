@@ -9,7 +9,7 @@ const Section = ({ title, bgColor, productItems }) => {
           <h1>{title}</h1>
         </div>
         <Row className="justify-content-center">
-          {productItems.map((productItem) => {
+          {productItems?.map((productItem) => {
             return (
               <ProductCard
                 key={productItem.id}

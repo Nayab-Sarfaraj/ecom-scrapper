@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { url } from "../../utils/url";
 
 export const STATUSES = Object.freeze({
   IDLE: "idle",
@@ -78,7 +79,7 @@ const userSlice = createSlice({
 });
 
 export const fetchUser = createAsyncThunk("fetchUser", async () => {
-  const res = await axios.get("/me");
+  const res = await axios.get(`${url}/me`);
   return res.data;
 });
 export const loginUser = createAsyncThunk("loginUser", async (formData) => {

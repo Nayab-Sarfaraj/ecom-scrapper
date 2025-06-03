@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { url } from "../../utils/url";
 
 export const STATUSES = Object.freeze({
   IDLE: "idle",
@@ -29,7 +30,7 @@ const productSlice = createSlice({
 });
 
 export const fetchProduct = createAsyncThunk("fetchProduct", async () => {
-  const res = await axios.get("/product/all");
+  const res = await axios.get(`${url}/product/all`);
   console.log(res.data);
   return res.data;
 });
