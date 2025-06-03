@@ -317,13 +317,11 @@ const getSearchedProduct = async (req, res, next) => {
         })
         .exec();
     }
-    let amazonProducts = await testfetchAmazonProducts(
-      searchQuery,
-      page,
-      minPrice,
-      maxPrice
-    );
-    if (amazonProducts?.length !== 0) {
+    let amazonProducts =
+      (await testfetchAmazonProducts(searchQuery, page, minPrice, maxPrice)) ||
+      [];
+    console.log(amazonProducts);
+    if (amazonProducts.length !== 0) {
       amazonProducts = amazonProducts.filter(
         (item) =>
           Object.hasOwn(item, "title") &&
@@ -333,13 +331,9 @@ const getSearchedProduct = async (req, res, next) => {
       );
     }
 
-    let flipkartProducts = await fetchFlipkartProduct(
-      searchQuery,
-      page,
-      minPrice,
-      maxPrice
-    );
-    if (flipkartProducts?.length === 0) {
+    let flipkartProducts =
+      (await fetchFlipkartProduct(searchQuery, page, minPrice, maxPrice)) || [];
+    if (flipkartProducts.length === 0) {
       flipkartProducts = flipkartProducts.filter(
         (item) =>
           Object.hasOwn(item, "title") &&
