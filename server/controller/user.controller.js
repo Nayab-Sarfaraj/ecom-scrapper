@@ -16,7 +16,7 @@ const register = async (req, res, next) => {
       contactNumber,
       businessName,
     } = req.body;
-
+    console.log(req.body);
     if (!email) return next(new Errorhandler("email is reuired", 401));
     if (!name) return next(new Errorhandler("name is rquired ", 401));
     if (!password) return next(new Errorhandler("password is required", 401));
