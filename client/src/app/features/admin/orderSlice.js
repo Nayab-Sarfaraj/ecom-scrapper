@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { url } from "../../../utils/url";
 
 export const STATUSES = Object.freeze({
   IDLE: "idle",
@@ -53,7 +54,7 @@ export const editOrderStatus = createAsyncThunk(
   async ({ id, orderStatus }) => {
     try {
       console.log(orderStatus);
-      const res = await axios.post(`/order/status/${id}`, {orderStatus});
+      const res = await axios.post(`${url}/order/status/${id}`, { orderStatus }, { withCredentials: true });
       console.log(res.data);
       return res.data;
     } catch (error) {
@@ -68,8 +69,8 @@ export const editPaymentStatus = createAsyncThunk(
   async ({ id, paymentStatus }) => {
     try {
       const res = await axios.post(
-        `/order/status/payment/${id}`,
-        {paymentStatus}
+        `${url}/order/status/payment/${id}`,
+        { paymentStatus }, { withCredentials: true }
       );
       return res.data;
     } catch (error) {
@@ -80,7 +81,7 @@ export const editPaymentStatus = createAsyncThunk(
 );
 export const getOrderById = createAsyncThunk("getOrderById", async (id) => {
   try {
-    const res = await axios.get(`/order/${id}`);
+    const res = await axios.get(`${url}/order/${id}`, { withCredentials: true });
     return res.data;
   } catch (error) {
     console.log(error);

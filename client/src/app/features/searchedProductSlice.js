@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { STATUSES } from "./admin/fetchOrders";
+import { url } from "../../utils/url";
 
 const searchedProductSlice = createSlice({
   name: "searchedProduct",
@@ -29,13 +30,13 @@ export const getSearchedProducts = createAsyncThunk(
   async ({ searchQuery, page, minPrice = 500, maxPrice = 500000 }) => {
     try {
       console.log(minPrice);
-      let url = "";
+      let link = "";
       if (minPrice) {
-        url = `/products/all?page=${page}&searchQuery=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+        link = `${url}/products/all?page=${page}&searchQuery=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
       } else {
-        url = `/products/all?page=${page}&searchQuery=${searchQuery}`;
+        link = `/products/all?page=${page}&searchQuery=${searchQuery}`;
       }
-      const res = await axios.get(url);
+      const res = await axios.get(link, { withCredentials: true });
       return res.data;
     } catch (error) {
       console.log(error);

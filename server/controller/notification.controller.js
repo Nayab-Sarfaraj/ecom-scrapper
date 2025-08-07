@@ -7,13 +7,15 @@ const createNotification = async (title, user, product, to) => {
       user: user._id,
       product: product._id,
     };
+    console.log({ title, content, to })
     const notification = await Notification.create({ title, content, to });
     console.log(notification);
     return notification;
   } catch (error) {
     console.log("ERROR WHILE CERATEING NOTIFICATION");
     console.log(error);
-    return next(new Errorhandler("Something went wrong"));
+    return null
+
   }
 };
 

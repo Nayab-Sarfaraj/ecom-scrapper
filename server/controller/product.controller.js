@@ -283,7 +283,7 @@ const getSearchedProduct = async (req, res, next) => {
       .populate({
         path: "vendor",
         match: { district: req.user.district.toLowerCase() },
-        select: "name district",
+        select: "name district ",
       })
       .exec();
 
@@ -295,11 +295,7 @@ const getSearchedProduct = async (req, res, next) => {
         ],
       })
         .skip(toBeSkipped)
-        .populate({
-          path: "vendor",
-          match: { state: req.user.state.toLowerCase() },
-          select: "name state",
-        })
+        .populate("vendor")
         .exec();
     }
     if (products.length == 0) {
@@ -310,11 +306,7 @@ const getSearchedProduct = async (req, res, next) => {
         ],
       })
         .skip(toBeSkipped)
-        .populate({
-          path: "vendor",
-          match: { country: req.user.country.toLowerCase() },
-          select: "name country",
-        })
+        .populate("vendor")
         .exec();
     }
     let amazonProducts =
@@ -345,19 +337,21 @@ const getSearchedProduct = async (req, res, next) => {
     res
       .status(200)
       .json({ success: true, products, amazonProducts, flipkartProducts });
-    console.log("here");
-    if (products && products.length !== 0) {
-      console.log("here");
-      for (const prd of products) {
-        const notification = await createNotification(
-          prd.name,
-          req.user,
-          prd,
-          prd.vendor
-        );
-        console.log(notification);
-      }
-    }
+    // console.log("here");
+    // if (products && products.length !== 0) {
+    //   console.log("here");
+    //   for (const prd of products) {
+
+    //     console.log(prd);
+    //     const notification = await createNotification(
+    //       prd.name,
+    //       req.user,
+    //       prd,
+    //       prd.vendor
+    //     );
+    //     console.log(notification);
+    //   }
+    // }
   } catch (error) {
     console.log("ERROR WHILE SEARCHING THE PRODUCT");
     console.log(error);

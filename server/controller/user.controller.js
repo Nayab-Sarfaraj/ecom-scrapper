@@ -136,6 +136,7 @@ const updatePassword = async (req, res, next) => {
 const forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
+    console.log(req.body);
     const user = await User.findOne({ email });
 
     if (!user)

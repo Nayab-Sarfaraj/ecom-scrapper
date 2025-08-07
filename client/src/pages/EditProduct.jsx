@@ -11,7 +11,7 @@ const EditProduct = () => {
     const navigate = useNavigate();
 
     const product = useSelector((state) =>
-        state.vendorProducts.data.product.find((item) => item._id.toString() === id.toString())
+        state.vendorProducts.data?.product.find((item) => item._id.toString() === id.toString())
     ); // Assuming the product is stored in state.products.items
 
     const [formData, setFormData] = useState({

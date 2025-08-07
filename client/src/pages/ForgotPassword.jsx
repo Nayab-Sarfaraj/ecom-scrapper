@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Form, Button, Card, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { url } from "../utils/url";
 
 const ForgotPassword = ({ onSubmit }) => {
     const [email, setEmail] = useState("");
@@ -28,13 +29,20 @@ const ForgotPassword = ({ onSubmit }) => {
 
         setLoading(true);
         try {
-            const res = await axios.post("/forgot-password", { email }) // 
+            const res = await axios.post(`${url}/forgot-password`, { email }, { withCredentials: true }) // 
             //  `onSubmit` handles the API request
             console.log(res.data)
-            toast.success("Password reset link sent to your email.");
-            setEmail(""); // Clear the email field after success
+            if (res.data.success) {
+
+
+                toast.success("Password reset link sent to your email.");
+                setEmail(""); // Clear the email field after success
+            } else {
+                toast.error(res.data.message || "Something went wrong. Please try again.");
+            }
         } catch (error) {
-            toast.error("Failed to send reset link. Please try again.");
+            console.error("Error sending reset link:", error);
+            toast.error(error.response.data.message || "Failed to send reset link. Please try again.");
         } finally {
             setLoading(false);
         }

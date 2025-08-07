@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { url } from "../../../utils/url";
 
 export const STATUSES = Object.freeze({
   IDLE: "idle",
@@ -36,7 +37,8 @@ const productSlice = createSlice({
         state.status = STATUSES.ERROR;
       })
       .addCase(getProductById.pending, (state, action) => {
-        state.status = STATUSES.IDLE;
+        state.status = STATUSES.LOADING;
+        state.data = {};
       })
       .addCase(getProductById.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
@@ -59,7 +61,7 @@ const productSlice = createSlice({
 
 export const createProduct = createAsyncThunk("createProduct", async (data) => {
   try {
-    const res = await axios.post(`/product/new`, data);
+    const res = await axios.post(`/product/new`, data, { withCredentials: true });
     console.log(res.data);
     return res.data;
   } catch (error) {
@@ -72,7 +74,7 @@ export const editProduct = createAsyncThunk(
   "editProduct",
   async ({ id, data }) => {
     try {
-      const res = await axios.put(`/product/${id}`, data);
+      const res = await axios.put(`${url}/product/${id}`, data, { withCredentials: true });
       console.log(res.data);
       return res.data;
     } catch (error) {
@@ -83,7 +85,7 @@ export const editProduct = createAsyncThunk(
 );
 export const getProductById = createAsyncThunk("getProductById", async (id) => {
   try {
-    const res = await axios.get(`/product/${id}`);
+    const res = await axios.get(`${url}/product/${id}`, { withCredentials: true });
     return res.data;
   } catch (error) {
     console.log(error);
@@ -92,7 +94,7 @@ export const getProductById = createAsyncThunk("getProductById", async (id) => {
 });
 export const deleteProduct = createAsyncThunk("deleteProduct", async (id) => {
   try {
-    const res = await axios.delete(`/product/${id}`);
+    const res = await axios.delete(`${url}/product/${id}`, { withCredentials: true });
     return res.data;
   } catch (error) {
     console.log(error);

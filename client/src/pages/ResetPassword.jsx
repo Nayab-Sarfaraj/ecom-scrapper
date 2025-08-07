@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Form, Button, Card, Container } from "react-bootstrap";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { url } from "../utils/url";
 
 const ResetPassword = ({ onSubmit }) => {
     const [formData, setFormData] = useState({
@@ -44,14 +45,14 @@ const ResetPassword = ({ onSubmit }) => {
 
         setLoading(true);
         try {
-            const res = await axios.put(`/resetPassword/${token}`, { password: newPassword })
+            const res = await axios.put(`${url}/resetPassword/${token}`, { password: newPassword }, { withCredentials: true });
             console.log(res.data)
             toast.success("Password updated successfully.");
             setFormData({ newPassword: "", confirmPassword: "" }); // Clear form fields
 
             navigate("/login")
         } catch (error) {
-            toast.error("Failed to update password. Please try again.");
+            toast.error(error.response?.data?.message || "Failed to update password. Please try again.");
         } finally {
             setLoading(false);
         }

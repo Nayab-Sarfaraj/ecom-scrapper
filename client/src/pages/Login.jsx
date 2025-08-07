@@ -33,10 +33,18 @@ const Login = () => {
         event.preventDefault();
         console.log(formData);
         // Form submission logic here
-        dispatch(loginUser(formData))
+        const res = await dispatch(loginUser(formData))
+        console.log(res);
+        if (res.payload.success) {
 
-        toast.success("Welcome back")
-        navigate("/")
+            toast.success("Welcome back")
+            navigate("/")
+        } else toast.error(res.payload.message || "Something went wrong")
+        setIsLoading(false);
+        setFormData({
+            email: '',
+            password: '',
+        });
 
     };
     useEffect(() => {

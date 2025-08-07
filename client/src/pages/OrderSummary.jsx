@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { deleteProduct } from "../app/features/cart/cartSlice";
+import { url } from "../utils/url";
 
 const OrderSummary = () => {
     const cartList = useSelector((state) => state.cart.cartList);
@@ -24,12 +25,12 @@ const OrderSummary = () => {
             return;
         }
         console.log("Proceeding to payment...");
-        const { data } = await axios.post("/payment/order", { amount: calculateTotal() })
+        const { data } = await axios.post(`${url}/payment/order`, { amount: calculateTotal() }, { withCredentials: true });
         // console.log(res.data)
         console.log(data)
         // Add payment logic here
         const options = {
-            key: "rzp_test_XwPwc0xiKPxq6O",
+            key: "rzp_test_KamgQe04JzGUrM",
             amount: data.data.amount,
             currency: data.data.currency,
             name: "Test",
@@ -38,11 +39,12 @@ const OrderSummary = () => {
             handler: async (response) => {
                 console.log("response", response)
                 try {
-                    const res = await fetch(`/payment/verify`, {
+                    const res = await fetch(`${url}/payment/verify`, {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json'
                         },
+                        credentials: 'include',
                         body: JSON.stringify({
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
@@ -67,7 +69,7 @@ const OrderSummary = () => {
                     if (verifyData.message) {
                         toast.success(verifyData.message)
                     }
-                    const result = await axios.post("/order/new", { items, shippingAddress })
+                    const result = await axios.post(`${url}/order/new`, { items, shippingAddress }, { withCredentials: true })
                     cartList?.forEach((item) => {
                         dispatch(deleteProduct(item))
                     })
@@ -75,7 +77,7 @@ const OrderSummary = () => {
 
                 } catch (error) {
                     console.log(error);
-                    toast.error("Something went wrong")
+                    toast.error(error?.response?.data?.message || "Something went wrong")
                 }
             },
             theme: {

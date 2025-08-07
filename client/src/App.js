@@ -7,7 +7,7 @@ import Footer from "./components/Footer/Footer";
 import Loader from "./components/Loader/Loader";
 import NavBar from "./components/Navbar/Navbar";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchProduct } from "./app/features/productSlice";
 import { fetchUser } from "./app/features/userSlice";
 import Dashboard from "./pages/Dashboard";

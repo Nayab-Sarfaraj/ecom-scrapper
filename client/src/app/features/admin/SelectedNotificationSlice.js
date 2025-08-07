@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { STATUSES } from "./fetchOrders";
 import axios from "axios";
+import { url } from "../../../utils/url";
 
 const notificationSlice = createSlice({
   name: "notification",
@@ -26,7 +27,7 @@ export const fetchSelectedNotification = createAsyncThunk(
   "fetchSelectedNotification",
   async (id) => {
     try {
-      const res = await axios.get(`/notification/${id}`);
+      const res = await axios.get(`${url}/notification/${id}`, { withCredentials: true });
       return res.data;
     } catch (error) {
       console.log(`error while fetching the notifications`);

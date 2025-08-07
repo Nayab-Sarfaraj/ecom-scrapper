@@ -55,7 +55,7 @@ const CreateProduct = ({ onSubmit }) => {
         console.log(formData.images)
         // formData.images.forEach((image, index) => data.append(`images[${index}]`, image)); 
         data.append("images", formData.images)
-        
+
         data.forEach((item) => console.log(item))
         const res = await dispatch(createProduct(data))
         console.log(res)
@@ -65,7 +65,7 @@ const CreateProduct = ({ onSubmit }) => {
             navigate("/vendor/dashboard")
 
         } else {
-            toast.error(res.payload.message)
+            toast.error(res.payload.message || "Something went wrong, please try again later.")
         }
     };
 

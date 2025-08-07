@@ -25,8 +25,8 @@ const Product = () => {
     // );
 
   }, [id]);
-  const selectedProduct = useSelector(state => state.selectedProduct.data)
-  const products = useSelector(state => state.products.data)
+  const selectedProduct = useSelector(state => state?.selectedProduct?.data)
+  const products = useSelector(state => state.products?.data)
   useEffect(() => { dispatch(fetchSelectedProduct(id)) }, [id])
 
   useWindowScrollToTop();

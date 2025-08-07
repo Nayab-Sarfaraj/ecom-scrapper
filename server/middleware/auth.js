@@ -5,6 +5,7 @@ const Errorhandler = require("../utils/errorHandler");
 const isAuthenticated = async function (req, res, next) {
   try {
     const token = req.cookies.token;
+    console.log("Token:", token);
     if (!token)
       return next(new Errorhandler("Please login to access resources", 401));
     const decodedData = jwt.verify(token, process.env.JWT_SECRET);

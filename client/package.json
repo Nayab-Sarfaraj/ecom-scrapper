@@ -48,5 +48,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://ecom-scrapper-production.up.railway.app/api/v1"
+  "proxy": "http://localhost:8080/"
 }

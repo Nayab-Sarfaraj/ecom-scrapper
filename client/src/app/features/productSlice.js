@@ -30,7 +30,7 @@ const productSlice = createSlice({
 });
 
 export const fetchProduct = createAsyncThunk("fetchProduct", async () => {
-  const res = await axios.get(`/product/all`);
+  const res = await axios.get(`${url}/product/all`, { withCredentials: true });
   console.log(res.data);
   return res.data;
 });

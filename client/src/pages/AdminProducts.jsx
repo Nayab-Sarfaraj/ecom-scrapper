@@ -12,7 +12,10 @@ const AdminProducts = () => {
     const navigate = useNavigate()
     const handleProductDelete = async (id) => {
         const res = await dispatch(deleteProduct(id))
-        toast(res.payload?.message || "Something went wrong")
+        if (res?.payload?.success) {
+            toast.success("Product deleted successfully")
+        } else
+            toast(res.payload?.message || "Something went wrong")
     }
     useEffect(() => {
         dispatch(fetchVendorProduct())

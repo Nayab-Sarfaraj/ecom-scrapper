@@ -8,8 +8,20 @@ require("dotenv").config();
 const server = express();
 connectToDB();
 server.use(express.json());
+// const url = 'https://ecom-scrapper.vercel.app/'
+const allowedOrigins = ['http://localhost:3000', 'https://ecom-scrapper.vercel.app/'];
+
 server.use(
-  cors({ credentials: true, origin: ["https://ecom-scrapper.vercel.app/"] })
+  cors({
+    credentials: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  })
 );
 server.use(express.urlencoded({ extended: false }));
 server.use(cookieParser());

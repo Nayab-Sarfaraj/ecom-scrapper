@@ -37,9 +37,17 @@ const Register = () => {
     event.preventDefault();
     console.log(formData);
     // Form submission logic here
-    await dispatch(registerUser(formData));
-    toast.success("Registered successfully");
-    navigate("/login");
+    const res = await dispatch(registerUser(formData));
+
+    if (res.payload.success) {
+      toast.success("Registration successful");
+      navigate("/login");
+    } else {
+      toast.error(res.payload.message || "Something went wrong");
+    }
+    setIsLoading(false);
+
+
   };
   useEffect(() => {
     if (isLogin) navigate("/");
