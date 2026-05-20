@@ -12,7 +12,7 @@ ShopSync is an e-commerce platform that combines a seller dashboard (inventory +
 
 ## Demo
 
-[![ShopSync Demo Thumbnail](https://gjgngvgeodcchvlqdbui.supabase.co/storage/v1/object/public/pixlai-assets/Gemini_Generated_Image_9o5lw79o5lw79o5l.png)](https://youtu.be/a7xxQn6nqOE)
+[![ShopSync Demo Thumbnail](./assets/demo-thumbnail.png)](https://youtu.be/a7xxQn6nqOE)
 
 > Click the thumbnail above to watch the full demo on YouTube.
 
