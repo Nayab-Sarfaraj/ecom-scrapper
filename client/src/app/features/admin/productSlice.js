@@ -61,7 +61,7 @@ const productSlice = createSlice({
 
 export const createProduct = createAsyncThunk("createProduct", async (data) => {
   try {
-    const res = await axios.post(`/product/new`, data, { withCredentials: true });
+    const res = await axios.post(`${url}/product/new`, data, { withCredentials: true });
     console.log(res.data);
     return res.data;
   } catch (error) {

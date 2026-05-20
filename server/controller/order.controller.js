@@ -173,8 +173,8 @@ const getVendorOrders = async (req, res, next) => {
 
     // Fetch orders where the vendor matches the authenticated user
     const orders = await Order.find({ vendor: vendorId })
-      .populate("buyer", "name email") // Populate buyer details (optional)
-      .populate("product", "name price"); // Populate product details (optional)
+      .populate("buyer", "name email state district")
+      .populate("product", "name price coverImage category");
     console.log(orders);
     if (!orders || orders.length === 0) {
       return res.status(404).json({
@@ -197,8 +197,9 @@ const getOrderById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const order = await Order.findById(id)
-      .populate("buyer", "name email") // Populate buyer details (optional)
-      .populate("product", "name price");
+      .populate("buyer", "name email state district")
+      .populate("product", "name price coverImage category");
+    if (!order) return next(new Errorhandler("Order not found.", 404));
     return res.status(200).json({
       success: true,
       order,

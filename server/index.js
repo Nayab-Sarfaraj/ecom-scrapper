@@ -8,14 +8,22 @@ require("dotenv").config();
 const server = express();
 connectToDB();
 server.use(express.json());
-// const url = 'https://ecom-scrapper.vercel.app/'
-const allowedOrigins = ['http://localhost:3000', 'https://ecom-scrapper.vercel.app/'];
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://ecom-scrapper.vercel.app',
+];
 
 server.use(
   cors({
     credentials: true,
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+
+      // Normalize: strip trailing slash for comparison
+      const normalized = origin.replace(/\/$/, '');
+      if (allowedOrigins.map(o => o.replace(/\/$/, '')).includes(normalized)) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));

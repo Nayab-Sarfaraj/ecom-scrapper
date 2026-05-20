@@ -139,7 +139,7 @@ export const registerUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk("logoutUser", async () => {
-  const res = await axios.post(`${url}/logout`);
+  const res = await axios.post(`${url}/logout`, {}, { withCredentials: true });
   return res.data;
 });
 export const updatePassword = createAsyncThunk(

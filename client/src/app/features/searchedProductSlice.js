@@ -34,7 +34,7 @@ export const getSearchedProducts = createAsyncThunk(
       if (minPrice) {
         link = `${url}/products/all?page=${page}&searchQuery=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
       } else {
-        link = `/products/all?page=${page}&searchQuery=${searchQuery}`;
+        link = `${url}/products/all?page=${page}&searchQuery=${searchQuery}`;
       }
       const res = await axios.get(link, { withCredentials: true });
       return res.data;
