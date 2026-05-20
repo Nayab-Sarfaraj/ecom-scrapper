@@ -1,32 +1,47 @@
 import { Row } from "react-bootstrap";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import ProductCard from "./ProductCard/ProductCard";
 import { STATUSES } from "../app/features/productSlice";
-import Loader from "./Loader/Loader";
 
 const ShopList = ({ productItems, status }) => {
-  // useEffect(() => {}, [productItems]);
-  if (status === STATUSES.LOADING)
+  if (status === STATUSES.LOADING) {
     return (
-      <div className="text-center py-4">
-        <h3 className="text-black fw-bold">Searching...</h3>
+      <div className="text-center py-5">
+        <div
+          className="spinner-border"
+          style={{ color: "#0f3460" }}
+          role="status"
+        >
+          <span className="visually-hidden">Searching…</span>
+        </div>
+        <p style={{ marginTop: 12, color: "#6b7280", fontSize: 14 }}>
+          Searching products…
+        </p>
       </div>
     );
-  if (status === STATUSES.SUCCESS && productItems.length === 0) {
-    return <h1 className="not-found">No Local Vendor Found !!</h1>;
   }
+
+  // After a search returned no results
+  if (status === STATUSES.SUCCESS && productItems.length === 0) {
+    return (
+      <h1 className="not-found text-center">No products found</h1>
+    );
+  }
+
+  // IDLE (initial load) or SUCCESS with results — just render the list
+  if (!productItems || productItems.length === 0) return null;
+
   return (
     <Row className="justify-content-center">
-      {productItems.map((productItem) => {
-        return (
-          <ProductCard
-            key={productItem.id}
-            title={null}
-            productItem={productItem}
-          />
-        );
-      })}
+      {productItems.map((productItem) => (
+        <ProductCard
+          key={productItem._id || productItem.id}
+          title={null}
+          productItem={productItem}
+        />
+      ))}
     </Row>
   );
 };
+
 export default memo(ShopList);

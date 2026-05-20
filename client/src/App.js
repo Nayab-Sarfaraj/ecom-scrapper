@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import { lazy, Suspense, useEffect } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -35,6 +36,7 @@ const OrderSummary = lazy(() => import("./pages/OrderSummary.jsx"));
 const MyOrder = lazy(() => import("./pages/MyOrder.jsx"));
 const Notifications = lazy(() => import("./pages/Notifications.jsx"));
 const NotificationPage = lazy(() => import("./pages/NotificationPage.jsx"));
+const Wishlist = lazy(() => import("./pages/Wishlist.jsx"));
 function App() {
   const dispatch = useDispatch();
   // const isVendor = useSelector((state) => state.user?.isVendor);
@@ -71,6 +73,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-summary" element={<OrderSummary />} />
             <Route path="/order" element={<MyOrder />} />
+            <Route path="/wishlist" element={<Wishlist />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

@@ -1,0 +1,59 @@
+/* ShopSync — Price Filter */
+.price-filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.price-filter-inputs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.price-input-group {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+  transition: border-color 0.2s;
+}
+
+.price-input-group:focus-within {
+  border-color: #0f3460;
+  box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.08);
+}
+
+.price-prefix {
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  background: #f8fafc;
+  border-right: 1.5px solid #e2e8f0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.price-input {
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  font-size: 13px;
+  color: #1a1a2e;
+  width: 90px;
+  height: 100%;
+  background: transparent;
+  font-family: "Lato", sans-serif;
+}
+
+.price-input::placeholder {
+  color: #b0b8c4;
+}

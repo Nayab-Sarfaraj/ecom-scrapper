@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
@@ -83,10 +83,35 @@ const Cart = () => {
               <h2>Cart Summary</h2>
               <div className=" d_flex">
                 <h4>Total Price :</h4>
-                <h3>${totalPrice}.00</h3>
+                <h3>₹{totalPrice}.00</h3>
               </div>
             </div>
-            <Button className="mb-4" onClick={() => navigate("/checkout")}>Check out</Button>
+            <button
+              className="mb-4"
+              onClick={() => navigate("/checkout")}
+              style={{
+                width: "100%",
+                height: 46,
+                background: "#0f3460",
+                color: "#fff",
+                border: "none",
+                borderRadius: 8,
+                fontSize: 15,
+                fontWeight: 600,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                transition: "background-color 0.2s",
+                fontFamily: "Lato, sans-serif",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#0a2647")}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#0f3460")}
+            >
+              <i className="bi bi-bag-check"></i>
+              Checkout
+            </button>
           </Col>
         </Row>
       </Container>

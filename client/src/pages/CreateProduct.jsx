@@ -1,183 +1,250 @@
 import React, { useState } from "react";
-import { Form, Button, Card, Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createProduct } from "../app/features/admin/productSlice";
-import { useNavigate } from "react-router-dom";
+import "./forms.css";
 
-const CreateProduct = ({ onSubmit }) => {
-    const [formData, setFormData] = useState({
-        name: "",
-        description: "",
-        price: "",
-        category: "Electronics",
-        brand: "",
-        stock: 0,
-        coverImage: null, // Single file
-        images: [], // Multiple files
+const CATEGORIES = ["Electronics", "Fashion", "Home", "Books", "Other"];
 
-    });
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+const CreateProduct = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    category: "Electronics",
+    brand: "",
+    stock: 0,
+    coverImage: null,
+    images: [],
+  });
+  const [loading, setLoading] = useState(false);
 
-    const handleFileChange = (e) => {
-        const { name, files } = e.target;
-        if (name === "coverImage") {
-            setFormData({ ...formData, coverImage: files[0] });
-        } else if (name === "images") {
-            setFormData({ ...formData, images: Array.from(files) });
-        }
-    };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-        // Validation: Check required fields
-        if (!formData.name || !formData.price || !formData.coverImage) {
-            toast.error("Please fill all required fields.")
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (name === "coverImage") {
+      setFormData({ ...formData, coverImage: files[0] });
+    } else if (name === "images") {
+      setFormData({ ...formData, images: Array.from(files) });
+    }
+  };
 
-            return;
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // Prepare form data for submission
-        const data = new FormData();
-        data.append("name", formData.name);
-        data.append("description", formData.description);
-        data.append("price", formData.price);
-        data.append("category", formData.category);
-        data.append("brand", formData.brand);
-        data.append("stock", formData.stock);
-        data.append("coverImage", formData.coverImage); // Single file
-        console.log(formData.images)
-        // formData.images.forEach((image, index) => data.append(`images[${index}]`, image)); 
-        data.append("images", formData.images)
+    if (!formData.name || !formData.price || !formData.coverImage) {
+      toast.error("Please fill all required fields.");
+      return;
+    }
 
-        data.forEach((item) => console.log(item))
-        const res = await dispatch(createProduct(data))
-        console.log(res)
-        // Submit the form data
-        if (res.payload?.success) {
-            toast("Product added")
-            navigate("/vendor/dashboard")
+    setLoading(true);
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("description", formData.description);
+    data.append("price", formData.price);
+    data.append("category", formData.category);
+    data.append("brand", formData.brand);
+    data.append("stock", formData.stock);
+    data.append("coverImage", formData.coverImage);
+    data.append("images", formData.images);
 
-        } else {
-            toast.error(res.payload.message || "Something went wrong, please try again later.")
-        }
-    };
+    const res = await dispatch(createProduct(data));
+    setLoading(false);
 
-    return (
-        <Container className="my-4">
-            <Card className="p-4 shadow-sm">
-                <h2>Create New Product</h2>
-                <Form onSubmit={handleSubmit} encType="multipart/form-data">
-                    <Form.Group className="mb-3">
-                        <Form.Label>Product Name *</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            placeholder="Enter product name"
-                            required
-                        />
-                    </Form.Group>
+    if (res.payload?.success) {
+      toast.success("Product created successfully!");
+      navigate("/vendor/dashboard");
+    } else {
+      toast.error(res.payload?.message || "Something went wrong, please try again.");
+    }
+  };
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            name="description"
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            rows={3}
-                            placeholder="Enter product description"
-                        />
-                    </Form.Group>
+  return (
+    <section className="product-form-page">
+      <Container style={{ maxWidth: 700 }}>
+        <div className="content-card">
+          <div className="card-header-bar">
+            <ion-icon name="add-circle-outline"></ion-icon>
+            <h2>Create New Product</h2>
+          </div>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Price *</Form.Label>
-                        <Form.Control
-                            type="number"
-                            name="price"
-                            value={formData.price}
-                            onChange={handleInputChange}
-                            placeholder="Enter product price"
-                            min="0"
-                            required
-                        />
-                    </Form.Group>
+          <div className="card-body-inner">
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Category</Form.Label>
-                        <Form.Select
-                            name="category"
-                            value={formData.category}
-                            onChange={handleInputChange}
-                        >
-                            <option value="Electronics">Electronics</option>
-                            <option value="Fashion">Fashion</option>
-                            <option value="Home">Home</option>
-                            <option value="Books">Books</option>
-                            <option value="Other">Other</option>
-                        </Form.Select>
-                    </Form.Group>
+              {/* Basic info */}
+              <p className="ss-section-label">Basic information</p>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Brand</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="brand"
-                            value={formData.brand}
-                            onChange={handleInputChange}
-                            placeholder="Enter brand name"
-                        />
-                    </Form.Group>
+              <div className="mb-3">
+                <label className="ss-form-label" htmlFor="prod-name">
+                  Product name <span className="required-star">*</span>
+                </label>
+                <input
+                  id="prod-name"
+                  className="ss-input form-control"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Wireless Noise-Cancelling Headphones"
+                  required
+                />
+              </div>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Stock</Form.Label>
-                        <Form.Control
-                            type="number"
-                            name="stock"
-                            value={formData.stock}
-                            onChange={handleInputChange}
-                            placeholder="Enter stock quantity"
-                            min="0"
-                        />
-                    </Form.Group>
+              <div className="mb-3">
+                <label className="ss-form-label" htmlFor="prod-desc">
+                  Description
+                </label>
+                <textarea
+                  id="prod-desc"
+                  className="ss-textarea form-control"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows={4}
+                  placeholder="Describe your product — features, materials, dimensions…"
+                />
+              </div>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Cover Image *</Form.Label>
-                        <Form.Control
-                            type="file"
-                            name="coverImage"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                            required
-                        />
-                    </Form.Group>
+              {/* Pricing & inventory */}
+              <p className="ss-section-label">Pricing &amp; inventory</p>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Additional Images</Form.Label>
-                        <Form.Control
-                            type="file"
-                            name="images"
-                            accept="image/*"
-                            multiple
-                            onChange={handleFileChange}
-                        />
-                    </Form.Group>
+              <div className="form-grid-2">
+                <div className="mb-3">
+                  <label className="ss-form-label" htmlFor="prod-price">
+                    Price (₹) <span className="required-star">*</span>
+                  </label>
+                  <input
+                    id="prod-price"
+                    className="ss-input form-control"
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    placeholder="0"
+                    min="0"
+                    required
+                  />
+                </div>
 
-                    <Button variant="primary" type="submit" className="w-100">
-                        Create Product
-                    </Button>
-                </Form>
-            </Card>
-        </Container>
-    );
+                <div className="mb-3">
+                  <label className="ss-form-label" htmlFor="prod-stock">
+                    Stock quantity
+                  </label>
+                  <input
+                    id="prod-stock"
+                    className="ss-input form-control"
+                    type="number"
+                    name="stock"
+                    value={formData.stock}
+                    onChange={handleInputChange}
+                    placeholder="0"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <div className="form-grid-2">
+                <div className="mb-3">
+                  <label className="ss-form-label" htmlFor="prod-category">
+                    Category
+                  </label>
+                  <select
+                    id="prod-category"
+                    className="ss-select form-select"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                  >
+                    {CATEGORIES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="mb-3">
+                  <label className="ss-form-label" htmlFor="prod-brand">
+                    Brand
+                  </label>
+                  <input
+                    id="prod-brand"
+                    className="ss-input form-control"
+                    type="text"
+                    name="brand"
+                    value={formData.brand}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Sony, Nike…"
+                  />
+                </div>
+              </div>
+
+              {/* Images */}
+              <p className="ss-section-label">Images</p>
+
+              <div className="mb-3">
+                <label className="ss-form-label" htmlFor="prod-cover">
+                  Cover image <span className="required-star">*</span>
+                </label>
+                <input
+                  id="prod-cover"
+                  className="ss-file-input form-control"
+                  type="file"
+                  name="coverImage"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  required
+                />
+                <small style={{ fontSize: 12, color: "#9ca3af", marginTop: 4, display: "block" }}>
+                  This will be the main product thumbnail
+                </small>
+              </div>
+
+              <div className="mb-4">
+                <label className="ss-form-label" htmlFor="prod-images">
+                  Additional images
+                </label>
+                <input
+                  id="prod-images"
+                  className="ss-file-input form-control"
+                  type="file"
+                  name="images"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                />
+                <small style={{ fontSize: 12, color: "#9ca3af", marginTop: 4, display: "block" }}>
+                  You can select multiple files
+                </small>
+              </div>
+
+              <button
+                type="submit"
+                className="ss-btn-primary"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Spinner animation="border" size="sm" className="me-2" />
+                    Creating…
+                  </>
+                ) : (
+                  "Create Product"
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
 };
 
 export default CreateProduct;

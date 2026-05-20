@@ -1,94 +1,134 @@
 import React, { useEffect } from "react";
-import { Container, Card, Row, Col, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchSelectedNotification } from "../app/features/admin/SelectedNotificationSlice";
 import { STATUSES } from "../app/features/userSlice";
 import Loader from "../components/Loader/Loader";
+import "./vendor.css";
 
 const NotificationPage = () => {
-    const { id } = useParams()
-    const dispatch = useDispatch()
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const notification = useSelector(state => state.selectedNotification.data?.notification)
-    const status = useSelector(state => state.selectedNotification.status)
+  const notification = useSelector(
+    (state) => state.selectedNotification.data?.notification
+  );
+  const status = useSelector(
+    (state) => state.selectedNotification.status
+  );
 
-    useEffect(() => {
+  useEffect(() => {
+    dispatch(fetchSelectedNotification(id));
+  }, [id]);
 
-        dispatch(fetchSelectedNotification(id))
-    }, [id])
-    return (
-        <div
-            className="d-flex align-items-center justify-content-center bg-light"
-            style={{ minHeight: "100vh", padding: "20px" }}
-        >
-            <Container>
-                {
-                    notification ? <Card className="shadow-lg border-0">
-                        <Card.Body>
-                            <Card.Title className="text-center mb-4 fs-3 text-primary">
-                                User Inquiry: Product Request in Your Area
-                            </Card.Title>
-                            <Card.Text className="mb-4">
-                                <strong>Hello {notification.content.user.name},</strong>
-                            </Card.Text>
-                            <Card.Text className="mb-4">
-                                A user is interested in a product that matches your inventory and is located in your area!
-                            </Card.Text>
-                            <hr />
+  if (status === STATUSES.LOADING) return <Loader />;
+  if (!notification) return null;
 
-                            <h5 className="mb-3 text-secondary">Product Details:</h5>
-                            <Row>
-                                <Col md={6}>
-                                    <p>
-                                        <strong>Product Name:</strong> {notification.content.product.name}
-                                    </p>
-                                    <p>
-                                        <strong>Category:</strong> {notification.content.product.category}
-                                    </p>
-                                    <p>
-                                        <strong>Price Range:</strong> ₹{notification.content.product.price}
-                                    </p>
-                                </Col>
-                            </Row>
-                            <hr />
+  const { user, product } = notification.content;
 
-                            <h5 className="mb-3 text-secondary">User Details:</h5>
-                            <Row>
-                                <Col md={6}>
-                                    <p>
-                                        <strong>Name:</strong> {notification.content.user.name}
-                                    </p>
-                                    <p>
-                                        <strong>Location:</strong> {notification.content.user.state}, {notification.content.user.district}
-                                    </p>
-                                    <p>
-                                        <strong>Preferred Contact:</strong> {notification.content.user.email}
-                                    </p>
-                                </Col>
-                            </Row>
-
-                            <hr />
-                            <p>
-                                Please respond promptly to fulfill the user's request and potentially make a sale!
-                            </p>
-
-                            <div className="text-center mt-4">
-                                <Button variant="primary" size="lg">
-                                    Contact User
-                                </Button>
-                            </div>
-                        </Card.Body>
-                        <Card.Footer className="text-center text-muted">
-                            <small>
-                                Best regards, <strong>Shop Sync</strong>
-                            </small>
-                        </Card.Footer>
-                    </Card> : status === STATUSES.LOADING ? <Loader /> : <></>
-                }
-            </Container>
+  return (
+    <div className="vendor-page">
+      <Container>
+        <div className="vendor-page-header">
+          <div>
+            <h1>Notification</h1>
+            <p>Customer product inquiry</p>
+          </div>
+          <button
+            className="vendor-btn outline"
+            onClick={() => navigate("/vendor/notifications")}
+          >
+            <i className="bi bi-arrow-left"></i>
+            Back
+          </button>
         </div>
-    );
+
+        <div className="notif-detail-card">
+          <div className="ndc-header">
+            <ion-icon name="notifications-outline"></ion-icon>
+            <h2>Product Request in Your Area</h2>
+          </div>
+
+          <div className="ndc-body">
+            <p style={{ fontSize: 14, color: "#374151", marginBottom: 20 }}>
+              A customer is looking for a product that matches your inventory
+              and is located in your area. Reach out to make a sale.
+            </p>
+
+            <p className="notif-section-title">Product details</p>
+            <div className="notif-detail-grid">
+              <div className="notif-detail-item">
+                <span>Product name</span>
+                <strong className="text-capitalize">{product.name}</strong>
+              </div>
+              <div className="notif-detail-item">
+                <span>Category</span>
+                <strong className="text-capitalize">{product.category}</strong>
+              </div>
+              <div className="notif-detail-item">
+                <span>Price range</span>
+                <strong>₹{product.price}</strong>
+              </div>
+            </div>
+
+            <div
+              style={{
+                borderTop: "1px solid #f0f2f5",
+                margin: "20px 0",
+              }}
+            />
+
+            <p className="notif-section-title">Customer details</p>
+            <div className="notif-detail-grid">
+              <div className="notif-detail-item">
+                <span>Name</span>
+                <strong className="text-capitalize">{user.name}</strong>
+              </div>
+              <div className="notif-detail-item">
+                <span>Location</span>
+                <strong>
+                  {user.state}, {user.district}
+                </strong>
+              </div>
+              <div className="notif-detail-item">
+                <span>Contact</span>
+                <strong>{user.email}</strong>
+              </div>
+            </div>
+
+            <div
+              style={{
+                borderTop: "1px solid #f0f2f5",
+                margin: "20px 0",
+              }}
+            />
+
+            <p
+              style={{
+                fontSize: 13,
+                color: "#6b7280",
+                marginBottom: 20,
+              }}
+            >
+              Respond promptly to fulfil the customer's request and close the
+              sale.
+            </p>
+
+            <a
+              href={`mailto:${user.email}`}
+              className="vendor-btn"
+              style={{ display: "inline-flex" }}
+            >
+              <i className="bi bi-envelope"></i>
+              Contact Customer
+            </a>
+          </div>
+        </div>
+      </Container>
+    </div>
+  );
 };
 
 export default NotificationPage;

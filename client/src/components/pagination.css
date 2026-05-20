@@ -1,0 +1,47 @@
+/* ShopSync — Pagination */
+.ss-pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.ss-page-btn {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  border-radius: 7px;
+  border: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  font-family: "Lato", sans-serif;
+}
+
+.ss-page-btn:hover:not(:disabled) {
+  background-color: #f0f4f8;
+  border-color: #c8d6e5;
+  color: #0f3460;
+}
+
+.ss-page-btn.active {
+  background-color: #0f3460;
+  border-color: #0f3460;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.ss-page-btn.nav {
+  color: #6b7280;
+}
+
+.ss-page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

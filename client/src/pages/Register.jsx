@@ -1,14 +1,12 @@
-// Import necessary modules from React Bootstrap
 import React, { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { registerUser } from "../app/features/userSlice";
+import "./forms.css";
 
 const Register = () => {
   const [showPass, setShowPass] = useState(false);
-  const [isVendor, setIsVendor] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -21,24 +19,20 @@ const Register = () => {
     businessName: "",
     contactNumber: "",
   });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const isLogin = useSelector((state) => state.user.isLogin);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log(formData);
-    // Form submission logic here
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     const res = await dispatch(registerUser(formData));
-
     if (res.payload.success) {
       toast.success("Registration successful");
       navigate("/login");
@@ -46,162 +40,201 @@ const Register = () => {
       toast.error(res.payload.message || "Something went wrong");
     }
     setIsLoading(false);
-
-
   };
+
   useEffect(() => {
     if (isLogin) navigate("/");
   }, []);
 
   return (
-    <div className="p-4 border rounded bg-light">
-      {/* Heading */}
-      <h2 className="text-center mb-3">Register</h2>
-      <p className="text-center mb-4">
-        Please fill out the details for a seamless experience
-      </p>
+    <div className="form-page">
+      <div className="auth-card" style={{ maxWidth: 520 }}>
+        <div className="brand-bar">
+          <ion-icon name="bag"></ion-icon>
+          <span>ShopSync</span>
+        </div>
 
-      <Form onSubmit={handleSubmit}>
-        {/* Name Input */}
-        <Form.Group controlId="name" className="mb-3">
-          <Form.Label>Your Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Shahnewaz Sakil"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+        <h2>Create your account</h2>
+        <p className="auth-subtitle">Join ShopSync and start shopping today</p>
 
-        {/* Email Input */}
-        <Form.Group controlId="email" className="mb-3">
-          <Form.Label>Your Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="shofy@mail.com"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+        <form onSubmit={handleSubmit}>
+          <p className="ss-section-label">Personal details</p>
 
-        {/* Password Input */}
-        <Form.Group controlId="password" className="mb-3">
-          <Form.Label>Password</Form.Label>
-          <div className="position-relative">
-            <Form.Control
-              type={showPass ? "text" : "password"}
-              placeholder="Min. 8 characters"
-              name="password"
-              value={formData.password}
+          <div className="mb-3">
+            <label className="ss-form-label" htmlFor="name">
+              Full name
+            </label>
+            <input
+              id="name"
+              className="ss-input form-control"
+              type="text"
+              name="name"
+              value={formData.name}
               onChange={handleInputChange}
-              minLength="8"
+              placeholder="Your full name"
               required
             />
-            <span
-              className="position-absolute top-50 end-0 translate-middle-y me-3"
-              style={{ cursor: "pointer" }}
-              onClick={() => setShowPass(!showPass)}
-            >
-              {showPass ? "🙈" : "👁️"}
-            </span>
           </div>
-        </Form.Group>
 
-        {/* Country Input */}
-        <Form.Group controlId="country" className="mb-3">
-          <Form.Label>Country</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Your Country"
-            name="country"
-            value={formData.country}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+          <div className="mb-3">
+            <label className="ss-form-label" htmlFor="reg-email">
+              Email address
+            </label>
+            <input
+              id="reg-email"
+              className="ss-input form-control"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
 
-        {/* State Input */}
-        <Form.Group controlId="state" className="mb-3">
-          <Form.Label>State</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Your State"
-            name="state"
-            value={formData.state}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+          <div className="mb-3">
+            <label className="ss-form-label" htmlFor="reg-password">
+              Password
+            </label>
+            <div className="ss-password-wrapper">
+              <input
+                id="reg-password"
+                className="ss-input form-control"
+                type={showPass ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Min. 8 characters"
+                minLength="8"
+                required
+              />
+              <span
+                className="ss-password-toggle"
+                onClick={() => setShowPass(!showPass)}
+                aria-label={showPass ? "Hide password" : "Show password"}
+              >
+                <i className={`bi ${showPass ? "bi-eye-slash" : "bi-eye"}`}></i>
+              </span>
+            </div>
+          </div>
 
-        {/* District Input */}
-        <Form.Group controlId="district" className="mb-3">
-          <Form.Label>District</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Your District"
-            name="district"
-            value={formData.district}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+          <p className="ss-section-label">Location</p>
 
-        {/* Vendor Checkbox */}
-        <Form.Group controlId="isVendor" className="mb-3">
-          <Form.Check
-            type="checkbox"
-            label="Are you a vendor?"
-            name="isVendor"
-            checked={formData.isVendor}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
+          <div className="form-grid-2">
+            <div className="mb-3">
+              <label className="ss-form-label" htmlFor="country">
+                Country
+              </label>
+              <input
+                id="country"
+                className="ss-input form-control"
+                type="text"
+                name="country"
+                value={formData.country}
+                onChange={handleInputChange}
+                placeholder="Your country"
+                required
+              />
+            </div>
 
-        {/* Business Name Input (Conditional) */}
-        {formData.isVendor && (
-          <Form.Group controlId="businessName" className="mb-3">
-            <Form.Label>Business Name</Form.Label>
-            <Form.Control
+            <div className="mb-3">
+              <label className="ss-form-label" htmlFor="state">
+                State
+              </label>
+              <input
+                id="state"
+                className="ss-input form-control"
+                type="text"
+                name="state"
+                value={formData.state}
+                onChange={handleInputChange}
+                placeholder="Your state"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label className="ss-form-label" htmlFor="district">
+              District
+            </label>
+            <input
+              id="district"
+              className="ss-input form-control"
               type="text"
-              placeholder="Your Business Name (if applicable)"
-              name="businessName"
-              value={formData.businessName}
+              name="district"
+              value={formData.district}
               onChange={handleInputChange}
+              placeholder="Your district"
+              required
             />
-          </Form.Group>
-        )}
+          </div>
 
-        {/* Contact Number Input (Conditional) */}
-        {formData.isVendor && (
-          <Form.Group controlId="contactNumber" className="mb-3">
-            <Form.Label>Contact Number</Form.Label>
-            <Form.Control
-              type="tel"
-              placeholder="Your Contact Number"
-              name="contactNumber"
-              value={formData.contactNumber}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-        )}
-        <p className="text-center mt-3">
-          Already have an account? <Link to="/login">Login here</Link>
+          <div className="vendor-toggle-section mb-3">
+            <div className="form-check mb-0">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="isVendor"
+                name="isVendor"
+                checked={formData.isVendor}
+                onChange={handleInputChange}
+              />
+              <label className="form-check-label" htmlFor="isVendor">
+                I want to sell on ShopSync (vendor account)
+              </label>
+            </div>
+          </div>
+
+          {formData.isVendor && (
+            <div className="vendor-fields mb-3">
+              <p className="ss-section-label" style={{ marginTop: 0 }}>
+                Business details
+              </p>
+              <div className="mb-3">
+                <label className="ss-form-label" htmlFor="businessName">
+                  Business name
+                </label>
+                <input
+                  id="businessName"
+                  className="ss-input form-control"
+                  type="text"
+                  name="businessName"
+                  value={formData.businessName}
+                  onChange={handleInputChange}
+                  placeholder="Your business name"
+                />
+              </div>
+              <div className="mb-0">
+                <label className="ss-form-label" htmlFor="contactNumber">
+                  Contact number
+                </label>
+                <input
+                  id="contactNumber"
+                  className="ss-input form-control"
+                  type="tel"
+                  name="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleInputChange}
+                  placeholder="+91 98765 43210"
+                />
+              </div>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="ss-btn-primary mt-2"
+            disabled={isLoading}
+          >
+            {isLoading ? "Creating account…" : "Create Account"}
+          </button>
+        </form>
+
+        <p className="ss-helper-text">
+          Already have an account? <Link to="/login">Sign in</Link>
         </p>
-
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          variant="primary"
-          className="w-100"
-          disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : "Sign Up"}
-        </Button>
-      </Form>
+      </div>
     </div>
   );
 };

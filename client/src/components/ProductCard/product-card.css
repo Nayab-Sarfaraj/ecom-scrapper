@@ -84,20 +84,18 @@ button.add {
     transition: 0.5s;
 }
 
-.product-like label {
-    background-color: #0f3460;
-    padding: 1px 10px;
-    font-size: 12px;
-    color: white;
-    border-radius: 50px;
-}
-
 .product-like ion-icon {
     font-size: 20px;
     margin: 10px 3px;
     cursor: pointer;
+    transition: color 0.2s;
 }
 
 .product:hover .product-like {
+    opacity: 1;
+}
+
+/* Keep filled heart always visible even without hover */
+.product-like ion-icon[name="heart"] {
     opacity: 1;
 }

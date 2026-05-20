@@ -1,49 +1,65 @@
-import React, { useEffect, useState } from "react";
-import NotificationCard from "../components/NotificationCard";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchNotifications } from "../app/features/admin/notificationSlice";
+import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchNotifications } from "../app/features/admin/notificationSlice";
 import { STATUSES } from "../app/features/userSlice";
 import Loader from "../components/Loader/Loader";
-import { useNavigate } from "react-router-dom";
+import NotificationCard from "../components/NotificationCard";
+import "./vendor.css";
 
-const NotificationList = () => {
-    const notifications = useSelector(state => state.notifications.data?.notifications)
-    const status = useSelector(state => state.notifications.status)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+const Notifications = () => {
+  const notifications = useSelector(
+    (state) => state.notifications.data?.notifications
+  );
+  const status = useSelector((state) => state.notifications.status);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const handleDismiss = (id) => {
-        // setNotifications(notifications.filter((notification) => notification.id !== id));
-        navigate(`/vendor/notification/${id}`)
-    };
+  useEffect(() => {
+    dispatch(fetchNotifications());
+  }, []);
 
+  return (
+    <div className="vendor-page">
+      <Container>
+        <div className="vendor-page-header">
+          <div>
+            <h1>Notifications</h1>
+            <p>Customer inquiries and product requests in your area</p>
+          </div>
+        </div>
 
-    useEffect(() => {
-        dispatch(fetchNotifications())
-    }, [])
-    return (
-        <Container className="my-4">
-            <h2 className="mb-4">Notifications</h2>
-            <Row>
-                <Col md={8} className="mx-auto">
-                    {notifications?.length > 0 ? (
-                        notifications.map((notification) => (
-                            <NotificationCard
-                                key={notification.id}
-                                title={notification.title}
-                                onDismiss={() => handleDismiss(notification._id)}
-                            />
-                        ))
-                    ) : status === STATUSES.LOADING ? <><Loader /></> : (
-                        <p className="text-center text-muted">
-                            You have no new notifications.
-                        </p>
-                    )}
-                </Col>
-            </Row>
-        </Container>
-    );
+        <Row>
+          <Col md={8} className="mx-auto">
+            {status === STATUSES.LOADING ? (
+              <Loader />
+            ) : notifications?.length > 0 ? (
+              notifications.map((notification) => (
+                <NotificationCard
+                  key={notification._id}
+                  title={notification.title}
+                  onDismiss={() =>
+                    navigate(`/vendor/notification/${notification._id}`)
+                  }
+                />
+              ))
+            ) : (
+              <div className="vendor-card">
+                <div className="vendor-empty">
+                  <div className="empty-icon">
+                    <i className="bi bi-bell"></i>
+                  </div>
+                  <h3>All caught up</h3>
+                  <p>You have no new notifications right now.</p>
+                </div>
+              </div>
+            )}
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  );
 };
 
-export default NotificationList;
+export default Notifications;

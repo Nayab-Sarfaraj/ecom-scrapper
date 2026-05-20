@@ -1,0 +1,329 @@
+/* ============================================================
+   ShopSync — Shared Form Styles
+   Aligned with brand: #0f3460 primary, Lato font, #f6f9fc bg
+   ============================================================ */
+
+/* ---------- Page wrapper ---------- */
+.form-page {
+  min-height: calc(100vh - 140px);
+  background-color: #f6f9fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 16px;
+}
+
+/* ---------- Auth card (Login / Register / Password pages) ---------- */
+.auth-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(15, 52, 96, 0.10);
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 460px;
+}
+
+.auth-card .brand-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.auth-card .brand-bar ion-icon {
+  font-size: 28px;
+  color: #0f3460;
+}
+
+.auth-card .brand-bar span {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f3460;
+  letter-spacing: -0.3px;
+}
+
+.auth-card h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.auth-card .auth-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* ---------- Product / Checkout card ---------- */
+.content-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(15, 52, 96, 0.08);
+  overflow: hidden;
+  width: 100%;
+}
+
+.content-card .card-header-bar {
+  background: #0f3460;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.content-card .card-header-bar ion-icon {
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.content-card .card-header-bar h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.content-card .card-body-inner {
+  padding: 28px;
+}
+
+/* ---------- Shared form field styles ---------- */
+.ss-form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+  letter-spacing: 0.2px;
+}
+
+.ss-form-label .required-star {
+  color: #e53e3e;
+  margin-left: 2px;
+}
+
+.ss-input {
+  height: 44px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1a1a2e;
+  background-color: #fafbfc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  padding: 0 14px;
+}
+
+.ss-input:focus {
+  border-color: #0f3460;
+  box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.10);
+  background-color: #ffffff;
+  outline: none;
+}
+
+.ss-input::placeholder {
+  color: #b0b8c4;
+  font-size: 13px;
+}
+
+.ss-textarea {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1a1a2e;
+  background-color: #fafbfc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  padding: 10px 14px;
+  resize: vertical;
+}
+
+.ss-textarea:focus {
+  border-color: #0f3460;
+  box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.10);
+  background-color: #ffffff;
+  outline: none;
+}
+
+.ss-select {
+  height: 44px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1a1a2e;
+  background-color: #fafbfc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  padding: 0 14px;
+  appearance: auto;
+}
+
+.ss-select:focus {
+  border-color: #0f3460;
+  box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.10);
+  background-color: #ffffff;
+  outline: none;
+}
+
+/* File input */
+.ss-file-input {
+  border: 1.5px dashed #c8d6e5;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #6b7280;
+  background-color: #f8fafc;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.ss-file-input:hover {
+  border-color: #0f3460;
+}
+
+/* Password toggle wrapper */
+.ss-password-wrapper {
+  position: relative;
+}
+
+.ss-password-wrapper .ss-input {
+  padding-right: 44px;
+  width: 100%;
+}
+
+.ss-password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #9ca3af;
+  line-height: 1;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+}
+
+.ss-password-toggle:hover {
+  color: #0f3460;
+}
+
+/* ---------- Submit button ---------- */
+.ss-btn-primary {
+  height: 46px;
+  background-color: #0f3460;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  width: 100%;
+  transition: background-color 0.2s, transform 0.1s;
+  cursor: pointer;
+}
+
+.ss-btn-primary:hover:not(:disabled) {
+  background-color: #0a2647;
+}
+
+.ss-btn-primary:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.ss-btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ---------- Divider ---------- */
+.ss-divider {
+  border: none;
+  border-top: 1px solid #e9ecef;
+  margin: 20px 0;
+}
+
+/* ---------- Helper links ---------- */
+.ss-helper-text {
+  font-size: 13px;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.ss-helper-text a {
+  color: #0f3460;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ss-helper-text a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Vendor toggle section ---------- */
+.vendor-toggle-section {
+  background: #f0f4f8;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 4px;
+}
+
+.vendor-toggle-section .form-check-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+}
+
+.vendor-toggle-section .form-check-input:checked {
+  background-color: #0f3460;
+  border-color: #0f3460;
+}
+
+.vendor-fields {
+  background: #f8fafc;
+  border-left: 3px solid #0f3460;
+  border-radius: 0 8px 8px 0;
+  padding: 16px;
+  margin-top: 4px;
+}
+
+/* ---------- Section divider with label ---------- */
+.ss-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 20px 0 12px;
+}
+
+/* ---------- Two-column grid for product forms ---------- */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+
+@media (max-width: 576px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-card {
+    padding: 28px 20px;
+  }
+
+  .content-card .card-body-inner {
+    padding: 20px 16px;
+  }
+}
+
+/* ---------- Form page layout for product forms ---------- */
+.product-form-page {
+  background-color: #f6f9fc;
+  padding: 60px 0;
+  min-height: calc(100vh - 140px);
+}

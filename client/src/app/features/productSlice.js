@@ -5,7 +5,7 @@ import { url } from "../../utils/url";
 export const STATUSES = Object.freeze({
   IDLE: "idle",
   ERROR: "error",
-  LOADING: "error",
+  LOADING: "loading",
   SUCCESS: "success",
 });
 const productSlice = createSlice({

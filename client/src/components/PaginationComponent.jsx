@@ -1,32 +1,44 @@
 import React from "react";
-import { Dropdown, Pagination } from "react-bootstrap";
+import "./pagination.css";
 
 const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
-    const handleSelect = (selectedPage) => {
-        onPageChange(Number(selectedPage));
-    };
+  if (totalPages <= 1) return null;
 
-    return (
-        <Dropdown className="my-3">
-            <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                Page {currentPage} of {totalPages}
-            </Dropdown.Toggle>
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-            <Dropdown.Menu>
-                {Array.from({ length: totalPages }, (_, index) => (
-                    <Dropdown.Item
-                        key={index + 1}
-                        eventKey={index + 1}
-                        active={currentPage === index + 1}
-                        onClick={() => handleSelect(index + 1)}
-                    >
-                        Page {index + 1}
-                    </Dropdown.Item>
-                ))}
-            </Dropdown.Menu>
-        </Dropdown>
-    );
+  return (
+    <div className="ss-pagination">
+      <button
+        className="ss-page-btn nav"
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        aria-label="Previous page"
+      >
+        <i className="bi bi-chevron-left"></i>
+      </button>
 
+      {pages.map((page) => (
+        <button
+          key={page}
+          className={`ss-page-btn${currentPage === page ? " active" : ""}`}
+          onClick={() => onPageChange(page)}
+          aria-label={`Page ${page}`}
+          aria-current={currentPage === page ? "page" : undefined}
+        >
+          {page}
+        </button>
+      ))}
+
+      <button
+        className="ss-page-btn nav"
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        aria-label="Next page"
+      >
+        <i className="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  );
 };
 
 export default PaginationComponent;

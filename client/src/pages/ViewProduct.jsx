@@ -1,92 +1,149 @@
 import React, { useEffect } from "react";
+import { Container, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
-import { Card, Button, Container, Spinner } from "react-bootstrap";
-import { getProductById } from "../app/features/admin/productSlice"; // Assuming this action exists
+import { useNavigate, useParams } from "react-router-dom";
+import { getProductById } from "../app/features/admin/productSlice";
+import "./vendor.css";
 
 const ViewProduct = () => {
-    const { id } = useParams(); // Get the product ID from the URL
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const { product } = useSelector((state => state.product.data))
+  const { product } = useSelector((state) => state.product.data);
 
-    useEffect(() => {
-        dispatch(getProductById(id));
-        // Fetch the product when the component loads
-        console.log(product)
-    }, [dispatch, id]);
+  useEffect(() => {
+    dispatch(getProductById(id));
+  }, [dispatch, id]);
 
-    const handleEdit = () => {
-        navigate(`/vendor/product/edit/${id}`); // Navigate to the edit page
-    };
-
-    if (!product) {
-        return (
-            <Container className="d-flex justify-content-center align-items-center vh-100">
-                <Spinner animation="border" />
-            </Container>
-        );
-    }
-
-
-
+  if (!product) {
     return (
-        <Container className="my-4">
-            <Card className="p-4 shadow-sm">
-                <h2>Product Details</h2>
-                <Card.Body>
-                    <Card.Title>{product.name}</Card.Title>
-                    <Card.Text><strong>Description:</strong> {product.description || "No description available."}</Card.Text>
-                    <Card.Text><strong>Price:</strong> ${product.price}</Card.Text>
-                    <Card.Text><strong>Category:</strong> {product.category}</Card.Text>
-                    <Card.Text><strong>Brand:</strong> {product.brand || "N/A"}</Card.Text>
-                    <Card.Text><strong>Stock:</strong> {product.stock}</Card.Text>
-
-                    {product.coverImage && (
-                        <div className="my-3">
-                            <h5>Cover Image:</h5>
-                            <img
-                                src={product.coverImage} // Assuming it's a URL
-                                alt={product.name}
-                                style={{ maxWidth: "500px", height: "auto" }}
-                            />
-                        </div>
-                    )}
-
-                    {product.images?.length > 0 && (
-                        <div className="my-3">
-                            <h5>Additional Images:</h5>
-                            <div className="d-flex flex-wrap">
-                                {product.images.map((image, index) => (
-                                    <img
-                                        key={index}
-                                        src={image} // Assuming each image is a URL
-                                        alt={`${product.name} - ${index + 1}`}
-                                        style={{
-                                            maxWidth: "150px",
-                                            height: "auto",
-                                            margin: "5px",
-                                            border: "1px solid #ddd",
-                                        }}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="d-flex justify-content-between mt-4">
-                        <Button variant="secondary" onClick={() => navigate(-1)}>
-                            Back
-                        </Button>
-                        <Button variant="primary" onClick={handleEdit}>
-                            Edit Product
-                        </Button>
-                    </div>
-                </Card.Body>
-            </Card>
-        </Container>
+      <div
+        style={{
+          minHeight: "60vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Spinner animation="border" style={{ color: "#0f3460" }} />
+      </div>
     );
+  }
+
+  return (
+    <div className="vendor-page">
+      <Container>
+        <div className="vendor-page-header">
+          <div>
+            <h1 className="text-capitalize">{product.name}</h1>
+            <p className="text-capitalize">{product.category}</p>
+          </div>
+          <div style={{ display: "flex", gap: 10 }}>
+            <button
+              className="vendor-btn outline"
+              onClick={() => navigate(-1)}
+            >
+              <i className="bi bi-arrow-left"></i>
+              Back
+            </button>
+            <button
+              className="vendor-btn"
+              onClick={() => navigate(`/vendor/product/edit/${id}`)}
+            >
+              <i className="bi bi-pencil"></i>
+              Edit Product
+            </button>
+          </div>
+        </div>
+
+        <div className="view-product-layout">
+          {/* Images */}
+          <div>
+            {product.coverImage && (
+              <img
+                src={product.coverImage}
+                alt={product.name}
+                className="view-product-img"
+              />
+            )}
+            {product.images?.length > 0 && (
+              <div className="view-product-thumb-row">
+                {product.images.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`${product.name} ${i + 1}`}
+                    className="view-product-thumb"
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Details */}
+          <div className="order-detail-card" style={{ alignSelf: "start" }}>
+            <div className="odc-header">
+              <ion-icon name="cube-outline"></ion-icon>
+              <h2>Product Details</h2>
+            </div>
+            <div className="odc-body">
+              <div className="detail-row">
+                <span className="detail-label">Name</span>
+                <span className="detail-value text-capitalize">
+                  {product.name}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Description</span>
+                <span className="detail-value">
+                  {product.description || "No description available."}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Price</span>
+                <span
+                  className="detail-value"
+                  style={{ fontWeight: 600, color: "#0f3460" }}
+                >
+                  ₹{product.price}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Category</span>
+                <span className="detail-value text-capitalize">
+                  {product.category}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Brand</span>
+                <span className="detail-value">{product.brand || "N/A"}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Stock</span>
+                <span className="detail-value">{product.stock}</span>
+              </div>
+              {product.rating > 0 && (
+                <div className="detail-row">
+                  <span className="detail-label">Rating</span>
+                  <span
+                    className="detail-value"
+                    style={{ display: "flex", alignItems: "center", gap: 4 }}
+                  >
+                    <i
+                      className="bi bi-star-fill"
+                      style={{ color: "#ffcd4e", fontSize: 13 }}
+                    ></i>
+                    {product.rating}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </Container>
+    </div>
+  );
 };
 
 export default ViewProduct;

@@ -1,48 +1,49 @@
-import React, { useState } from "react";
-import { Form, Button, Row, Col, InputGroup } from "react-bootstrap";
+import React from "react";
 import PaginationComponent from "../PaginationComponent";
+import "./pricefilter.css";
 
-const PriceFilter = ({ minPrice, maxPrice, setMaxPrice, setMinPrice, currentPage, onPageChange }) => {
-
-
-
-
-    return (
-        <div className="my-4">
-            <h5>Filter by Price</h5>
-            <Form>
-                <Row className="align-items-center">
-                    <Col xs={6} md={4}>
-                        <InputGroup>
-                            <InputGroup.Text>Min ₹</InputGroup.Text>
-                            <Form.Control
-                                type="number"
-                                placeholder="0"
-                                value={minPrice}
-                                onChange={(e) => setMinPrice(e.target.value)}
-                            />
-                        </InputGroup>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <InputGroup>
-                            <InputGroup.Text>Max ₹</InputGroup.Text>
-                            <Form.Control
-                                type="number"
-                                placeholder="10000"
-                                value={maxPrice}
-                                onChange={(e) => setMaxPrice(e.target.value)}
-                            />
-                        </InputGroup>
-                    </Col>
-                    <Col xs={12} md={4} className="mt-2 mt-md-0">
-                        <PaginationComponent currentPage={currentPage} onPageChange={onPageChange} totalPages={5} />
-
-                    </Col>
-
-                </Row>
-            </Form>
+const PriceFilter = ({
+  minPrice,
+  maxPrice,
+  setMaxPrice,
+  setMinPrice,
+  currentPage,
+  onPageChange,
+}) => {
+  return (
+    <div className="price-filter-bar">
+      <div className="price-filter-inputs">
+        <div className="price-input-group">
+          <span className="price-prefix">Min ₹</span>
+          <input
+            className="price-input"
+            type="number"
+            placeholder="0"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            min="0"
+          />
         </div>
-    );
+        <div className="price-input-group">
+          <span className="price-prefix">Max ₹</span>
+          <input
+            className="price-input"
+            type="number"
+            placeholder="Any"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            min="0"
+          />
+        </div>
+      </div>
+
+      <PaginationComponent
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+        totalPages={5}
+      />
+    </div>
+  );
 };
 
 export default PriceFilter;
